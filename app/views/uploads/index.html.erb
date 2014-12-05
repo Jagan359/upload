@@ -1,4 +1,10 @@
 <h1> Welcome to File Upload App </h1>
 
 <%= link_to "Submit a File", uploads_show_path %>
+<p>
 
+<% Dir.entries("public/uploads").each do |f| %>
+<p>
+<strong><%= f %> abc </strong></p>
+<% end %>
+</p>
