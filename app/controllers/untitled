@@ -1,0 +1,39 @@
+<h1> Welcome to File Upload App </h1>
+
+<%= link_to "Submit a File", uploads_show_path %>
+<p>
+
+<% Dir.entries("public/uploads").each do |f| %>
+<p>
+	<%= link_to f, uploads_download_path(f) %>
+</p>
+
+<% end %>
+</p>
+
+
+
+
+
+class UploadsController < ApplicationController
+  def index
+
+
+  end
+
+  	 def upload
+  uploaded_io = params[:dataf]
+  File.open(Rails.root.join('public', 'uploads', uploaded_io.original_filename), 'wb') do |file|
+    file.write(uploaded_io.read)
+    
+end
+    flash[:notice] = "File has been uploaded successfully"
+    redirect_to uploads_index_path
+  end
+
+  def download
+  	    send_file Rails.root.join('public/uploads', f), :type=>"application/pdf", :x_sendfile=>true
+  	    
+  end
+ 	 
+end

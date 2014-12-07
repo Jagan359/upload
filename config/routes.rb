@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   get 'uploads/index'
 get 'uploads/show'
   post 'uploads/upload'
+get 'uploads/download'
+get 'uploads/print'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
