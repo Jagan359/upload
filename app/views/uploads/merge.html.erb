@@ -1,0 +1,9 @@
+<h1>Welcome to Split file page</h1>
+<% @det.each do |f| %>
+<p>
+	
+<%= link_to f.file_name, :controller => "uploads", :action => 'download', :pa => f.file_name %>
+
+
+</p>
+<% end %>

@@ -1,4 +1,4 @@
-<h1> Welcome to File Upload App </h1>
+	<h1> Welcome to File Upload App </h1>
 
 <%= link_to "Submit a File", uploads_show_path %>
 <p>
@@ -6,8 +6,11 @@
 <% @det.each do |f| %>
 <p>
 	
-	<%= link_to f.file_name, :controller => "uploads", :action => 'download', :pa => f.file_name %>
-</p>
+<%= link_to f.file_name, :controller => "uploads", :action => 'download', :pa => f.file_name %>
 
+<%= link_to "Split file", :controller => "uploads", :action => 'split', :pa => f.file_name  %>
+</p>
 <% end %>
+
+<%= link_to "merge file", :controller => "uploads", :action => 'merge'  %>
 </p>

@@ -1,0 +1,17 @@
+<h1>Welcome Secure Cloud Storage Services!!</h1>
+<p><h2>What do you wanna do?</h2></p>
+<%= link_to "Submit a File", uploads_show_path %>
+<p>
+<% @det.each do |f| %>
+<h2><%= f.file_name %></h2>
+<%= link_to '<button type="button">Retrive my very secure files from clouds</button>'.html_safe, uploads_cloudretrieve_path %>
+<% end %>
+</p>
+<p>
+
+	<% @dat.each do |f| %>
+<h2><%= f.file_name %></h2><%= link_to '<button type="button">Securly store file into cloud accounts</button>'.html_safe , uploads_cloudstore_path %>
+<%= link_to '<button type="button">Download to local</button>'.html_safe , uploads_cloudstore_path %>
+<%= link_to '<button type="button">Delete from App storage</button>'.html_safe , :controller => "uploads", :action => "destroy", :method => "delete" %>
+<% end %>
+</p>

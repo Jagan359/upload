@@ -1,0 +1,20 @@
+user_id => foreign key
+file name
+content type
+encryption key
+encryption iv
+split1
+split2
+secured:boolean
+
+
+
+Can content type be changed?
+ENCRYPTION - How to store key and iv? throwing error
+
+Yet to implement:
+
+1.params sanitize
+2.random file name genrator
+3.gem with few functionality in it
+

@@ -1,17 +1,23 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
   devise_for :users
   get 'uploads/index'
 get 'uploads/show'
   post 'uploads/upload'
 get 'uploads/download'
 get 'uploads/print'
-
-
+get 'uploads/split'
+  get 'uploads/merge'
+  get 'uploads/encry'
+get 'uploads/cloudstore'
+  get 'uploads/cloudretrieve'
+  delete 'uploads/destroy'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'uploads#index'
+   root 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
