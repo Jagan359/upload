@@ -8,22 +8,9 @@ def cloudretrieve
 end
 
 
-def destroy
-       file = params[:pa]
-      #Delete the file
-      puts "************12341***********************************************************************************"
-      puts file.file_name
-      puts "***********************************************************************************************"
-      
-      File.delete(Rails.root.join('laddu', file.file_name))
-      file.destroy
-      flash[:notice] = "File has been Deleted successfully"
-      redirect_to :controller => "home",:action => 'index'
-  end
-
 def upload
   uploaded_io = params[:dataf]
-  File.open(Rails.root.join('laddu', uploaded_io.original_filename), 'wb') do |file|
+  File.open(Rails.root.join('laddu', current_user.email, uploaded_io.original_filename), 'wb') do |file|
     file.write(uploaded_io.read)
   end
   @det= Detail.new
@@ -101,7 +88,7 @@ end
 
   def download
     @file = params[:pa]
- 	  send_file Rails.root.join('laddu', @file),  :x_sendfile=>true
+ 	  send_file Rails.root.join('laddu', current_user.email, @file),  :x_sendfile=>true
   	    
   end
 
