@@ -2,16 +2,30 @@
 <p><h2>What do you wanna do?</h2></p>
 <%= link_to "Submit a File", uploads_show_path %>
 <p>
+<table>	<th><h3>List of secure files in your cloud thru secure system:</h3></th>
 <% @det.each do |f| %>
-<h2><%= f.file_name %></h2>
-<%= link_to '<button type="button">Retrive my very secure files from clouds</button>'.html_safe, uploads_cloudretrieve_path %>
+<tr><td>
+<h2><%= f.file_name %></h2></td>
+<td>
+<%= link_to '<button type="button">Retrive from clouds</button>'.html_safe, uploads_cloudretrieve_path %></td>
 <% end %>
 </p>
-<p>
-
+</table>
+<p><hr/>
+	############################################################################################################################################################################################################################################################################################################################################################
+	####################################################################################################################
+<hr/>
+<table>
+	<th><h3>List of files in yourApp memory:</h3></th>
 	<% @dat.each do |f| %>
-<h2><%= f.file_name %></h2><%= link_to '<button type="button">Securly store file into cloud accounts</button>'.html_safe , uploads_cloudstore_path %>
-<%= link_to '<button type="button">Download to local</button>'.html_safe , uploads_cloudstore_path %>
-<%= link_to '<button type="button">Delete from App storage</button>'.html_safe , :controller => "uploads", :action => "destroy", :method => "delete" %>
+	<tr>
+		<td>
+<h7><%= f.file_name %></h7> </td> 
+<td><%= link_to '<button type="button">Securly store to cloud</button>'.html_safe , uploads_cloudstore_path %></td>
+<td>
+<%= link_to '<button type="button">Download to local</button>'.html_safe , :controller => "uploads", :action => 'download', :pa => f.file_name  %></td>
+<td>
+<%= link_to '<button type="button">Delete from App storage</button>'.html_safe, :controller => "home", :action => 'dellit', :pa => f %></td>
 <% end %>
 </p>
+</table>

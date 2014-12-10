@@ -1,5 +1,5 @@
 <marquee>Beautiful save buttons. Click to save the file in your cloud!!, IT will be stored safely and securely!!!<h2></marquee>
-
+<table>
 <tr>
 <td>
 Save split 1 in Google drive: ~-=@::::::::::::::: </td>
@@ -10,14 +10,15 @@ Save split 1 in Google drive: ~-=@::::::::::::::: </td>
    data-sitename="My Company Name">
    </div>
 
-</td>
-<td><%= link_to "Sucess? ", home_index_path %></td>
-<td><%= link_to "NO???? :(", home_index_path %></td></tr>
+</td></tr>
 <tr><td>Save split 2 in Drop Box: ~-=@::::::::::: </td>
 <td>
 	<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="5lwv7zdzkd6matm"></script>
 	<a href="https://dl.dropboxusercontent.com/s/deroi5nwm6u7gdf/advice.png" class="dropbox-saver"></a>
 </td></tr>	
-
-
+<tr><td><%= link_to "Sucess? ", home_index_path %></td>
+<td><%= link_to "NO???? :(", home_index_path %></td></tr>
+</tr>
+<tr><td><%= link_to '<button type="button">Back</button>'.html_safe, home_index_path %></td></tr>
 	
+</table>

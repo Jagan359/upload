@@ -2,12 +2,23 @@ class UploadsController < ApplicationController
   def index
     #@files = Dir.entries("laddu")
     #@user_files= Detail.where('email= ?', current_user.email)
-    @det=current_user.details
+   # @det=current_user.details
   end
 def cloudretrieve
 end
 
+
 def destroy
+       file = params[:pa]
+      #Delete the file
+      puts "************12341***********************************************************************************"
+      puts file.file_name
+      puts "***********************************************************************************************"
+      
+      File.delete(Rails.root.join('laddu', file.file_name))
+      file.destroy
+      flash[:notice] = "File has been Deleted successfully"
+      redirect_to :controller => "home",:action => 'index'
   end
 
 def upload
@@ -90,7 +101,7 @@ end
 
   def download
     @file = params[:pa]
- 	  send_file Rails.root.join('laddu', @file), :type=>"application/pdf", :x_sendfile=>true
+ 	  send_file Rails.root.join('laddu', @file),  :x_sendfile=>true
   	    
   end
 
