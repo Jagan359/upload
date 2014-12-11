@@ -1,0 +1,7 @@
+<h1>Choose from Drives!</h1>
+
+<script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="5lwv7zdzkd6matm">
+var button = Dropbox.createChooseButton(success: function(files) {
+        alert("Here's the file link: " + files[0].link)
+    };);
+document.getElementById("container").appendChild(button)</script>

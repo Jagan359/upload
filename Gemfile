@@ -11,7 +11,7 @@ gem 'devise'
 gem 'twitter-bootstrap-rails'
 gem 'less-rails'
 gem 'rails_12factor'
-
+gem 'dropbox-sdk'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets

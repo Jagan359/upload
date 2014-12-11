@@ -1,12 +1,45 @@
 class UploadsController < ApplicationController
+require 'dropbox_sdk'
+  
+APP_KEY = 'b0qbdorzo700qi1'
+APP_SECRET = 'cm20q9te2dw6eqh'
   def index
     #@files = Dir.entries("laddu")
     #@user_files= Detail.where('email= ?', current_user.email)
    # @det=current_user.details
   end
 def cloudretrieve
-end
+ fid = params[:pa]
+ puts "*////////////**********************///////////////"
+   puts fid
+flow = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET)
+authorize_url = flow.start()
 
+# Have the user sign in and authorize this app
+puts '1. Go to: ' + authorize_url
+puts '2. Click "Allow" (you might have to log in first)'
+puts '3. Copy the authorization code'
+print 'Enter the authorization code here: '
+code = gets.strip
+
+# This will fail if the user gave us an invalid authorization code
+access_token, user_id = flow.finish(code)
+
+client = DropboxClient.new(access_token)
+puts "linked account:", client.account_info().inspect
+
+#file = open('working-draft.txt')
+#response = client.put_file('/magnum-opus.txt', file)
+#puts "uploaded:", response.inspect
+
+root_metadata = client.metadata('/')
+puts "metadata:", root_metadata.inspect
+
+contents, metadata = client.get_file_and_metadata(fid)
+File.open(Rails.root.join('laddu', current_user.email, fid), 'wb') {|f| f.puts contents }
+  redirect_to :controller => "home",:action => 'index'
+
+end
 
 def upload
   uploaded_io = params[:dataf]
@@ -46,8 +79,49 @@ end
   #redirect_to :controller => "uploads", :action => 'split', :paa => @det.file_name
   redirect_to :controller => "home",:action => 'index'
 end
+#
 def cloudstore
-end   
+  fid=params[:pa]
+  flow = DropboxOAuth2FlowNoRedirect.new(APP_KEY, APP_SECRET)
+authorize_url = flow.start()
+puts authorize_url
+# Have the user sign in and authorize this app
+#puts '1. Go to: ' + authorize_url
+#puts '2. Click "Allow" (you might have to log in first)'
+#puts '3. Copy the authorization code'
+print 'Enter the authorization code here: '
+code = gets.strip 
+access_token, user_id = flow.finish(code)
+client = DropboxClient.new(access_token)
+puts "linked account:", client.account_info().inspect
+
+file = File.open(Rails.root.join('laddu',current_user.email, fid), 'r')#open('working-draft.txt')
+response = client.put_file(fid, file)
+  puts "****************************************************************************************************"
+  file.close
+puts "uploaded:", response.inspect
+#dit=Detail.where("file_name = ?",fid)
+#dit.secure=true
+#dit.save
+redirect_to home_index_path
+end 
+=begin for redirect catch
+def dropoauth
+  code = params[:code]
+  puts "**************************************************************************"
+  puts code
+  puts "**************************************************************************"
+access_token, user_id = @flow.finish(code)
+client = DropboxClient.new(access_token)
+puts "linked account:", client.account_info().inspect
+
+file = File.open(Rails.root.join('laddu',current_user.email, @fid), 'r')#open('working-draft.txt')
+response = client.put_file('/abc.txt', file)
+  puts "****************************************************************************************************"
+  file.close
+puts "uploaded:", response.inspect
+redirect_to customers_hmpg_path
+  end  
 =begin
 def split
     file = params[:paa]

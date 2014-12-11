@@ -7,12 +7,10 @@
 <tr><td>
 <h2><%= f.file_name %></h2></td>
 <td>
-<%= link_to '<button type="button">Retrive from clouds</button>'.html_safe, uploads_cloudretrieve_path %></td>
 <% end %>
 </p>
 </table>
-<p><hr/>
-
+<p><hr/><td>
 <hr/>
 <table>
 	<th><h3>List of files in yourApp memory:</h3></th>
@@ -20,11 +18,13 @@
 	<tr>
 		<td>
 <h7><%= f.file_name %></h7> </td> 
-<td><%= link_to '<button type="button">Securly store to cloud</button>'.html_safe , uploads_cloudstore_path %></td>
+<td><%= link_to '<button type="button">Securly store to cloud</button>'.html_safe , :controller => "uploads", :action => 'cloudstore', :pa => f.file_name %></td> 
 <td>
 <%= link_to '<button type="button">Download to local</button>'.html_safe , :controller => "uploads", :action => 'download', :pa => f.file_name  %></td>
 <td>
 <%= link_to '<button type="button">Delete from App storage</button>'.html_safe, :controller => "home", :action => 'dellit', :pa => f %></td>
+<td>
+<%= link_to '<button type="button">Retrive from clouds</button>'.html_safe, :controller => "uploads", :action => 'cloudretrieve', :pa => f.file_name %></td>
 <% end %>
 </p>
 </table>
