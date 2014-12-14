@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141209182034) do
+ActiveRecord::Schema.define(version: 20141213195856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,11 @@ ActiveRecord::Schema.define(version: 20141209182034) do
     t.integer  "user_id"
     t.text     "key1"
     t.text     "key2"
-    t.boolean  "secure",     default: false
+    t.string   "dropbox",    default: "No"
+    t.string   "google",     default: "No"
+    t.string   "split1"
+    t.string   "split2"
+    t.string   "status",     default: "inapp"
   end
 
   create_table "users", force: true do |t|
@@ -45,6 +49,8 @@ ActiveRecord::Schema.define(version: 20141209182034) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "google_access_token"
+    t.string   "dropbox_access_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
-  	    @det=current_user.details.where("secure = ?", true)
-  	    @dat=current_user.details.where("secure = ?", false)
+  	    @det=current_user.details.where("status = ?", "safe")
+  	    @dat=current_user.details.where("status = ?", "inapp")
         
  #       @allo=current_user.details
 #if @allo == nil

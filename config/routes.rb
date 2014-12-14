@@ -13,6 +13,8 @@ get 'uploads/split'
 get 'uploads/cloudstore'
   get 'uploads/cloudretrieve'
   delete 'uploads/destroy'
+  get 'uploads/dropoauth'
+  get 'uploads/googleoauth'
   get 'home/dellit'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
