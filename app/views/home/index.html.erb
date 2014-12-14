@@ -5,8 +5,10 @@
 <table>	<th><h3>List of secure files in your cloud thru secure system:</h3></th>
 <% @det.each do |f| %>
 <tr><td>
-<h2><%= f.file_name %></h2></td>
+<h7><%= f.file_name %></h7></td>
 <td>
+<%= link_to '<button type="button">Retrive from clouds</button>'.html_safe, :controller => "uploads", :action => 'cloudretrieve', :pa => f.file_name %></td>
+</tr>
 <% end %>
 </p>
 </table>
@@ -23,8 +25,7 @@
 <%= link_to '<button type="button">Download to local</button>'.html_safe , :controller => "uploads", :action => 'download', :pa => f.file_name  %></td>
 <td>
 <%= link_to '<button type="button">Delete from App storage</button>'.html_safe, :controller => "home", :action => 'dellit', :pa => f %></td>
-<td>
-<%= link_to '<button type="button">Retrive from clouds</button>'.html_safe, :controller => "uploads", :action => 'cloudretrieve', :pa => f.file_name %></td>
+</tr>
 <% end %>
 </p>
 </table>

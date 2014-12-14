@@ -147,58 +147,86 @@ def oauth2callback    #Authentiate and store a segment in google drive
         @@auth.fetch_access_token!
         access_token=@@auth.access_token
         fid=current_user.details.find_by_status("split")
-        split2=fid.split2
-        # Creates a session.
-        session = GoogleDrive.login_with_oauth(access_token)
-        # Uploads a local file.
-        session.upload_from_file(Rails.root.join('laddu', current_user.email,split2), split2, :convert => false)
-        fid.google="safe"
-        fid.save
-        redirect_to :controller => "uploads", :action => 'cloudstore'
+        if fid!=nil
+           split2=fid.split2
+            # Creates a session.
+            session = GoogleDrive.login_with_oauth(access_token)
+            # Uploads a local file.
+            session.upload_from_file(Rails.root.join('laddu', current_user.email,split2), split2, :convert => false)
+            fid.google="safe"
+            fid.save
+            redirect_to :controller => "uploads", :action => 'cloudstore'
+        else
+            session = GoogleDrive.login_with_oauth(access_token)
+            fiid = current_user.details.find_by_status("merge")
+            file = session.file_by_title(fiid.split2)
+            file.download_to_file(Rails.root.join('laddu',fiid.split2))
+            fiid.google="no"  
+            fiid.save
+            redirect_to :controller => "uploads",:action => 'merge'
+        end
+
     end
 end
 
 def cloudretrieve
+
+        file = params[:pa]
+        fid=current_user.details.find_by(file_name: file)
+        fid.status="merge"
+        fid.save
+        if fid.dropbox=="safe" and  fid.google=="safe"
+            redirect_to :controller => 'uploads', :action => "dropboxretrieve", :pa => fid.split1
+        else
+          puts "ERRRRRRRORRRRR"
+        end
 end
 
-def dropretrieve
- fid = params[:pa]
- puts "*////////////**********************///////////////"
-   puts fid
-flow = DropboxOAuth2Flow.new(APP_KEY, APP_SECRET,DROP_REDIRECT)
-authorize_url = flow.start()
-
-# Have the user sign in and authorize this app
-puts '1. Go to: ' + authorize_url
-puts '2. Click "Allow" (you might have to log in first)'
-puts '3. Copy the authorization code'
-print 'Enter the authorization code here: '
-code = gets.strip
-
-# This will fail if the user gave us an invalid authorization code
-access_token, user_id = flow.finish(code)
-
+def dropboxretrieve
+ 
+    split1=params[:pa]
+    aut=current_user.details.find_by_split1(split1)
+    access_token=current_user.dropbox_access_token
+    
 client = DropboxClient.new(access_token)
-puts "linked account:", client.account_info().inspect
+#puts "linked account:", client.account_info().inspect
 
 #file = open('working-draft.txt')
 #response = client.put_file('/magnum-opus.txt', file)
 #puts "uploaded:", response.inspect
+#root_metadata = client.metadata('/')
+#puts "metadata:", root_metadata.inspect
+contents, metadata = client.get_file_and_metadata(split1)
+File.open(Rails.root.join('laddu', current_user.email, split1), 'wb') {|f| f.puts contents }
+  aut.dropbox="no"
+  aut.save
+   redirect_to :controller => 'uploads', :action => "oauth2callback"
 
-root_metadata = client.metadata('/')
-puts "metadata:", root_metadata.inspect
+end
 
-contents, metadata = client.get_file_and_metadata(fid)
-File.open(Rails.root.join('laddu', current_user.email, fid), 'wb') {|f| f.puts contents }
-  redirect_to :controller => "uploads",:action => 'cloudretrieve'
+def merge
 
+fiid=current_user.details.find_by_status("merge")
+image_a = File.open(Rails.root.join('laddu', current_user.email, fiid.file_name),'w+')
+image_b = File.open(Rails.root.join('laddu', current_user.email, fiid.split1),'r')
+image_c = File.open(Rails.root.join('laddu', current_user.email, fiid.split2),'r')
+image_c.each_line do |l|
+    m=image_b.gets
+    image_a.write(m)        
+    image_a.write(l)
+
+  end
+  
+image_a.close
+image_b.close
+image_c.close
+fiid.status="inapp"
+fiid.save
+redirect_to home_index_path
 end
 
 
   def show
   end
-  
-
-
 
 end

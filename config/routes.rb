@@ -11,7 +11,7 @@ get 'uploads/split'
 get 'uploads/cloudstore'
 get 'uploads/dropboxstore'
 get 'uploads/oauth2callback'
-
+get 'uploads/dropboxretrieve'
   get 'uploads/merge'
   get 'uploads/encry'
 
