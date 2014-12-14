@@ -49,15 +49,16 @@
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <% if user_signed_in? %>
+            <li> You are logged in as <%= current_user.email  %></li>
             <li><%= link_to "Sign Out", destroy_user_session_path , method: :delete %></li>
             <% end %>
-            <li><%= link_to "Google", "http://www.google.com"  %></li>
-            <li><%= link_to "Link3", "/path3"  %></li>
+            
+
           </ul>
         </div>
       </div>
     </div>
-<h3>Under Construction</h3>
+<h4>Beta version</h4>
     <div class="container">
       <div class="row">
         <div class="col-lg-9">
@@ -66,12 +67,13 @@
         </div>
         <div class="col-lg-3">
           <div class="well sidebar-nav">
-            <h3>Sidebar</h3>
+            <h3>Useful links</h3>
             <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
+              <li class="nav-header"></li>
+              <li><%= link_to "Google drive", "http://www.drive.google.com"  %></li>
+              <li><%= link_to "Dropbox", "http://www.dropbox.com"  %></li>
+             <li><%= link_to "Google", "http://www.google.com"  %></li>
+            
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
