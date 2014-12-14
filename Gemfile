@@ -12,6 +12,7 @@ gem 'twitter-bootstrap-rails'
 gem 'less-rails'
 gem 'rails_12factor'
 gem 'dropbox-sdk'
+gem 'google_drive'
 gem 'google-api-client'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'

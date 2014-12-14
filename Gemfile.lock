@@ -68,6 +68,11 @@ GEM
       retriable (>= 1.4)
       signet (>= 0.5.0)
       uuidtools (>= 2.1.0)
+    google_drive (0.3.11)
+      google-api-client (>= 0.7.0)
+      nokogiri (>= 1.4.4, != 1.5.2, != 1.5.1)
+      oauth (>= 0.3.6)
+      oauth2 (>= 0.5.0)
     hike (1.2.3)
     i18n (0.6.11)
     jbuilder (2.2.5)
@@ -89,9 +94,20 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.4.3)
+    mini_portile (0.6.1)
     minitest (5.4.3)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nokogiri (1.6.5)
+      mini_portile (~> 0.6.0)
+    oauth (0.4.7)
+    oauth2 (1.0.0)
+      faraday (>= 0.8, < 0.10)
+      jwt (~> 1.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
     orm_adapter (0.5.0)
     pg (0.17.1)
     rack (1.5.2)
@@ -179,6 +195,7 @@ DEPENDENCIES
   devise
   dropbox-sdk
   google-api-client
+  google_drive
   jbuilder (~> 2.0)
   jquery-rails
   less-rails
