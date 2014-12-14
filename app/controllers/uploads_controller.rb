@@ -220,6 +220,9 @@ image_c.each_line do |l|
 image_a.close
 image_b.close
 image_c.close
+File.delete(Rails.root.join('laddu',current_user.email, fiid.split1))
+      File.delete(Rails.root.join('laddu',current_user.email, fiid.split2))
+
 fiid.status="inapp"
 fiid.save
 redirect_to home_index_path
