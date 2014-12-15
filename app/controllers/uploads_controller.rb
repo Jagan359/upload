@@ -14,6 +14,8 @@ OAUTH_SCOPE = "https://www.googleapis.com/auth/drive " +
     "https://spreadsheets.google.com/feeds/"
 
 REDIRECT_URI = 'http://localhost:3000/uploads/oauth2callback'
+
+
 #dropbox constants  
 APP_KEY = 'u3j11dhyn84gcc4'
 APP_SECRET = 'odgcfm7ufu080kh'
@@ -39,9 +41,7 @@ end
         
   end
 
-#implement random file names
-
-def randomnames
+def randomnames   #Assigns random names to fragmented files
     file = params[:pa]
     rec=current_user.details.find_by(file_name: file)
     letter = [('a'..'z'),('A'..'Z')].map { |i| i.to_a  }.flatten
@@ -73,6 +73,9 @@ end
     image_a =  File.open(Rails.root.join('laddu', current_user.email, file), 'r')
     image_b =   File.open(Rails.root.join('laddu', current_user.email, rec.split1), 'w+')
     image_c = File.open(Rails.root.join('laddu', current_user.email, rec.split2), 'w+')
+
+            #Vettu is the gem which cryptographically splits the file into two parts
+
     spil=Vettu.piri(image_a,image_b,image_c)
     File.delete(Rails.root.join('laddu', current_user.email, file))
   redirect_to :controller => "uploads", :action => 'cloudstore'
@@ -82,7 +85,7 @@ end
 def cloudstore 
 
 #Routes to dropbox or google srive after split to store them 
-#after cheking if the user has uthenticated the app for their storage
+#after cheking if the user has authenticated the app for their storage
 
     if current_user.dropbox_access_token == nil
       redirect_to :controller => 'uploads', :action => "dropoauth"
@@ -139,7 +142,7 @@ def dropboxstore    #Store a segment in dropbox
 end
 
 
-def oauth2callback    #Authentiate and store a segment in google drive
+def oauth2callback    #Authentiates with google
     if params[:code]==nil
         #drive = client.discovered_api('drive', 'v2')
         client = Google::APIClient.new
@@ -155,6 +158,9 @@ def oauth2callback    #Authentiate and store a segment in google drive
         @@auth.fetch_access_token!
         access_token=@@auth.access_token
         fid=current_user.details.find_by_status("split")
+
+                #Uploads the fragment to google drive
+
         if fid!=nil
            split2=fid.split2
             # Creates a session.
@@ -166,6 +172,7 @@ def oauth2callback    #Authentiate and store a segment in google drive
             File.delete(Rails.root.join('laddu', current_user.email,split2))
             redirect_to :controller => "uploads", :action => 'cloudstore'
         else
+              #Retrieves the file from google drive
             session = GoogleDrive.login_with_oauth(access_token)
             fiid = current_user.details.find_by_status("merge")
             file = session.file_by_title(fiid.split2)
@@ -178,7 +185,7 @@ def oauth2callback    #Authentiate and store a segment in google drive
     end
 end
 
-def cloudretrieve
+def cloudretrieve   #Routes the control to retrieve files from clouds
 
         file = params[:pa]
         fid=current_user.details.find_by(file_name: file)
@@ -191,7 +198,7 @@ def cloudretrieve
         end
 end
 
-def dropboxretrieve
+def dropboxretrieve     #Retrieves from drop box
  
     split1=params[:pa]
     aut=current_user.details.find_by_split1(split1)
@@ -213,7 +220,7 @@ File.open(Rails.root.join('laddu', current_user.email, split1), 'wb') {|f| f.put
 
 end
 
-def merge
+def merge       #After both the files being retrieved, the files are merged back to original form
 
 fiid=current_user.details.find_by_status("merge")
 image_a = File.open(Rails.root.join('laddu', current_user.email, fiid.file_name),'w+')
@@ -230,7 +237,7 @@ end
 
 
 
-  def show
+  def show    #Upload file to app form
   end
 
 end
