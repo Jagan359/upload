@@ -5,6 +5,8 @@ ruby '2.1.2'
 gem 'rails', '4.1.8'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
+gem 'rack-ssl'
+gem 'rails-observers'
 gem 'therubyracer'
 gem 'pg'
 gem 'devise'

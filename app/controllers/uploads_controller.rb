@@ -40,20 +40,39 @@ end
   end
 
 #implement random file names
+
+def randomnames
+    file = params[:pa]
+    rec=current_user.details.find_by(file_name: file)
+    letter = [('a'..'z'),('A'..'Z')].map { |i| i.to_a  }.flatten
+    split1 = (0..8).map{ letter[rand(letter.length)]}.join
+    rec.split1=split1+".scs"
+    letter = [('a'..'z'),('A'..'Z')].map { |i| i.to_a  }.flatten
+    split2 = (0..8).map{ letter[rand(letter.length)]}.join
+    rec.split2=split2+".scs"
+    rec.save
+    redirect_to :controller => "uploads", :action => 'split', :pa => file
+end
+
+
+
     def split        #Splits the file in a fashion that is more secure
     file = params[:pa]
     rec=current_user.details.find_by(file_name: file)
+=begin 
     filepeice1=file+"p1"
     filepeice2=file+"p2"
     rec.split1 =filepeice1
     rec.split2 =filepeice2
+=end
     rec.dropbox ="storeme"
     rec.google ="storeme"
     rec.status ="split"
     rec.save
+
     image_a =  File.open(Rails.root.join('laddu', current_user.email, file), 'r')
-    image_b =   File.open(Rails.root.join('laddu', current_user.email, filepeice1), 'w+')
-    image_c = File.open(Rails.root.join('laddu', current_user.email, filepeice2), 'w+')
+    image_b =   File.open(Rails.root.join('laddu', current_user.email, rec.split1), 'w+')
+    image_c = File.open(Rails.root.join('laddu', current_user.email, rec.split2), 'w+')
     n=2
       image_a.each_line do |l|
         if n%2==0

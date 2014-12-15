@@ -20,7 +20,7 @@
 	<tr>
 		<td>
 <h7><%= f.file_name %></h7> </td> 
-<td><%= link_to '<button type="button">Securly store to cloud</button>'.html_safe , :controller => "uploads", :action => 'split', :pa => f.file_name %></td> 
+<td><%= link_to '<button type="button">Securly store to cloud</button>'.html_safe , :controller => "uploads", :action => 'randomnames', :pa => f.file_name %></td> 
 <td>
 <%= link_to '<button type="button">Download to local</button>'.html_safe , :controller => "uploads", :action => 'download', :pa => f.file_name  %></td>
 <td>
