@@ -1,7 +1,7 @@
 class UploadsController < ApplicationController
 require 'dropbox_sdk'
     require 'rubygems'
-require 'dropbox_sdk'
+require 'google_drive'
 require 'google/api_client'
 require 'launchy'
 require 'rubygems'
@@ -73,18 +73,8 @@ end
     image_a =  File.open(Rails.root.join('laddu', current_user.email, file), 'r')
     image_b =   File.open(Rails.root.join('laddu', current_user.email, rec.split1), 'w+')
     image_c = File.open(Rails.root.join('laddu', current_user.email, rec.split2), 'w+')
-    n=2
-      image_a.each_line do |l|
-        if n%2==0
-          image_b.write(l)    
-        else  
-           image_c.write(l)
-        end
-      n=n+1
-      end
-  image_a.close
-  image_b.close
-  image_c.close
+    spil=Vettu.piri(image_a,image_b,image_c)
+    File.delete(Rails.root.join('laddu', current_user.email, file))
   redirect_to :controller => "uploads", :action => 'cloudstore'
 end
 
@@ -143,6 +133,7 @@ def dropboxstore    #Store a segment in dropbox
     file.close
     aut.dropbox="safe"
     aut.save
+    File.delete(Rails.root.join('laddu', current_user.email, split1))
     puts "uploaded:", response.inspect
     redirect_to :controller => "uploads", :action => 'cloudstore'
 end
@@ -151,8 +142,6 @@ end
 def oauth2callback    #Authentiate and store a segment in google drive
     if params[:code]==nil
         #drive = client.discovered_api('drive', 'v2')
-        state="abcd"
-        email_address='jagan26@gmail.com'
         client = Google::APIClient.new
         @@auth = client.authorization
         @@auth.client_id = CLIENT_ID
@@ -161,7 +150,7 @@ def oauth2callback    #Authentiate and store a segment in google drive
         @@auth.redirect_uri = REDIRECT_URI
         uri = @@auth.authorization_uri
         Launchy.open(uri)
-    else
+        else
         @@auth.code= params[:code]
         @@auth.fetch_access_token!
         access_token=@@auth.access_token
@@ -174,12 +163,13 @@ def oauth2callback    #Authentiate and store a segment in google drive
             session.upload_from_file(Rails.root.join('laddu', current_user.email,split2), split2, :convert => false)
             fid.google="safe"
             fid.save
+            File.delete(Rails.root.join('laddu', current_user.email,split2))
             redirect_to :controller => "uploads", :action => 'cloudstore'
         else
             session = GoogleDrive.login_with_oauth(access_token)
             fiid = current_user.details.find_by_status("merge")
             file = session.file_by_title(fiid.split2)
-            file.download_to_file(Rails.root.join('laddu',fiid.split2))
+            file.download_to_file(Rails.root.join('laddu',current_user.email,fiid.split2))
             fiid.google="no"  
             fiid.save
             redirect_to :controller => "uploads",:action => 'merge'
@@ -229,16 +219,7 @@ fiid=current_user.details.find_by_status("merge")
 image_a = File.open(Rails.root.join('laddu', current_user.email, fiid.file_name),'w+')
 image_b = File.open(Rails.root.join('laddu', current_user.email, fiid.split1),'r')
 image_c = File.open(Rails.root.join('laddu', current_user.email, fiid.split2),'r')
-image_c.each_line do |l|
-    m=image_b.gets
-    image_a.write(m)        
-    image_a.write(l)
-
-  end
-  
-image_a.close
-image_b.close
-image_c.close
+mersalaiten=Vettu.searu(image_a,image_b,image_c)
 File.delete(Rails.root.join('laddu',current_user.email, fiid.split1))
       File.delete(Rails.root.join('laddu',current_user.email, fiid.split2))
 
