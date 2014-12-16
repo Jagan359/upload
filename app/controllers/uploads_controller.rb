@@ -13,13 +13,13 @@ OAUTH_SCOPE = "https://www.googleapis.com/auth/drive " +
     "https://docs.googleusercontent.com/ " +
     "https://spreadsheets.google.com/feeds/"
 
-REDIRECT_URI = 'http://localhost:3000/uploads/oauth2callback'
+REDIRECT_URI = 'https://securecloudstore.herokuapp.com/uploads/oauth2callback'
 
 
 #dropbox constants  
 APP_KEY = 'u3j11dhyn84gcc4'
 APP_SECRET = 'odgcfm7ufu080kh'
-DROPREDIRECT_URI = 'http://localhost:3000/uploads/dropoauth'
+DROPREDIRECT_URI = 'https://securecloudstore.herokuapp.com/uploads/dropoauth'
 
 def upload   #Uploads file from user local to app storage. 
   uploaded_io = params[:dataf]
