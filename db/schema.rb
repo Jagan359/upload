@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141213195856) do
+ActiveRecord::Schema.define(version: 20141216003724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,8 +27,6 @@ ActiveRecord::Schema.define(version: 20141213195856) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.text     "key1"
-    t.text     "key2"
     t.string   "dropbox",    default: "No"
     t.string   "google",     default: "No"
     t.string   "split1"
@@ -49,7 +47,6 @@ ActiveRecord::Schema.define(version: 20141213195856) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "google_access_token"
     t.string   "dropbox_access_token"
   end
 
