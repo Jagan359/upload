@@ -13,13 +13,13 @@ OAUTH_SCOPE = "https://www.googleapis.com/auth/drive " +
     "https://docs.googleusercontent.com/ " +
     "https://spreadsheets.google.com/feeds/"
 
-REDIRECT_URI = 'https://securecloudstore.herokuapp.com/uploads/oauth2callback'
+REDIRECT_URI = 'http://localhost:3000/uploads/oauth2callback'
 
 
 #dropbox constants  
 APP_KEY = 'u3j11dhyn84gcc4'
 APP_SECRET = 'odgcfm7ufu080kh'
-DROPREDIRECT_URI = 'https://securecloudstore.herokuapp.com/uploads/dropoauth'
+DROPREDIRECT_URI = 'http://localhost:3000/uploads/dropoauth'
 
 def upload   #Uploads file from user local to app storage. 
   uploaded_io = params[:dataf]
@@ -143,25 +143,35 @@ end
 
 
 def oauth2callback    #Authentiates with google
-    if params[:code]==nil
-        #drive = client.discovered_api('drive', 'v2')
-        client = Google::APIClient.new
-        @@auth = client.authorization
-        @@auth.client_id = CLIENT_ID
-        @@auth.client_secret = CLIENT_SECRET
-        @@auth.scope = OAUTH_SCOPE
-        @@auth.redirect_uri = REDIRECT_URI
-        uri = @@auth.authorization_uri
-        Launchy.open(uri)
-        else
-        @@auth.code= params[:code]
-        @@auth.fetch_access_token!
-        access_token=@@auth.access_token
+    if params[:code]==nil       #If code is nil then the request is from app, so request for code to google
+        @@client = Google::APIClient.new(
+  :application_name => 'SecureCloudStore',
+  :application_version => '1.0.0'
+)
+@@drive = @@client.discovered_api('drive', 'v2')
+
+# Request authorization
+@@client.authorization.client_id = CLIENT_ID
+@@client.authorization.client_secret = CLIENT_SECRET
+@@client.authorization.scope = OAUTH_SCOPE
+@@client.authorization.redirect_uri = REDIRECT_URI
+state="abcd"
+email_address='jagan26@gmail.com'
+uri = @@client.authorization.authorization_uri
+puts uri
+puts"*********************************************************"
+redirect_to uri.to_s
+
+        else    #Params has code, so this requewst is from google. Use the code to get access token
+        
+        @@client.authorization.code = params[:code]
+        @@client.authorization.fetch_access_token!
+        access_token=@@client.authorization.access_token
         fid=current_user.details.find_by_status("split")
 
                 #Uploads the fragment to google drive
 
-        if fid!=nil
+        if fid!=nil #if fid exists, that is a file which is split, then upload it to google drive
            split2=fid.split2
             # Creates a session.
             session = GoogleDrive.login_with_oauth(access_token)
@@ -171,7 +181,7 @@ def oauth2callback    #Authentiates with google
             fid.save
             File.delete(Rails.root.join('laddu', current_user.email,split2))
             redirect_to :controller => "uploads", :action => 'cloudstore'
-        else
+        else    #if fid is nil, then the cal is for downloading from drive, so get file from google drive
               #Retrieves the file from google drive
             session = GoogleDrive.login_with_oauth(access_token)
             fiid = current_user.details.find_by_status("merge")
